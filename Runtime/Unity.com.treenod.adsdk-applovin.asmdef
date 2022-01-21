@@ -1,0 +1,14 @@
+{
+    "name": "Unity.com.treenod.adsdk-applovin",
+    "references": [
+        "MaxSdk.Scripts"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

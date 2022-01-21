@@ -1,0 +1,7 @@
+{
+  "name": "com.treenod.adsdk-applovin",
+  "version": "1.0.0",
+  "dependencies": {
+    "com.unity.textmeshpro": "1.4.1"
+  }
+}
