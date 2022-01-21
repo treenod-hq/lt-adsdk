@@ -1,4 +1,7 @@
 {
   "name": "com.treenod.adsdk-applovin",
   "version": "1.0.0",
+  "unity": "2018.4",
+  "displayName": "applovin sdk",
+  "description": "."
 }
