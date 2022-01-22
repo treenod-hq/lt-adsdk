@@ -1218,11 +1218,17 @@ public class MaxSdkUnityEditor : MaxSdkBase
 
     private static Dictionary<string, string> CreateBaseEventPropsDictionary(string eventName, string adUnitId)
     {
-        return new Dictionary<string, string>
-        {
-            ["name"] = eventName,
-            ["adUnitId"] = adUnitId
-        };
+        // C# 4.0 미만 대응
+        //return new Dictionary<string, string>
+        //{
+        //    ["name"] = eventName,
+        //    ["adUnitId"] = adUnitId
+        //};
+
+        var dic = new Dictionary<string, string>();
+        dic.Add("name", eventName);
+        dic.Add("adUnitId", adUnitId);
+        return dic;
     }
 
     private static void ExecuteWithDelay(float seconds, Action action)
