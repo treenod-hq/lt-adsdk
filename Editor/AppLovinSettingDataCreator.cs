@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace Treenod.Ad
 {
-    public class AppLovinSettingDataCreator : MonoBehaviour
+    public class AppLovinSettingDataCreator
     {
         [MenuItem( "AdSdk/AppLovin/셋팅데이터 생성" )]
         private static void CreateAppLovinSettingData ()
