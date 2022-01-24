@@ -24,6 +24,8 @@ namespace AppLovinMax.Mediation.Google.Editor
         [PostProcessBuild]
         public static void OnPostProcessBuild(BuildTarget buildTarget, string buildPath)
         {
+            Debug.Log("======Package PostprocessBuild");
+
             var appId = MaxMediationGoogleUtils.GetAppIdFromAppLovinSettings("AdMobIosAppId");
 
             // Log error if the App ID is not set.
