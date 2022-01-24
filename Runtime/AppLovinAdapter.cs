@@ -23,11 +23,12 @@ namespace Treenod.Ad
             if ( _initialized ) return;
 
             _initialized = true;
-            _settingData = AppLovinSettingData.LoadData();
-
             _onInitialize = onComplete;
-
+            _settingData = AppLovinSettingData.LoadData();
+            
             MaxSdkCallbacks.OnSdkInitializedEvent += OnInitialize;
+            SetRewardedAdCallbacks();
+            
             MaxSdk.SetSdkKey( _settingData.SdkKey );
             //MaxSdk.SetUserId( userId );
             MaxSdk.InitializeSdk();
@@ -35,8 +36,6 @@ namespace Treenod.Ad
 
         private void OnInitialize ( MaxSdkBase.SdkConfiguration sdkConfiguration )
         {
-            SetRewardedAdCallbacks();
-
             if ( _onInitialize != null )
             {
                 _onInitialize.Invoke();
@@ -49,7 +48,6 @@ namespace Treenod.Ad
             MaxSdkCallbacks.Rewarded.OnAdLoadedEvent += OnRewardedAdLoadedEvent;
             MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent += OnRewardedAdFailedEvent;
             MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedAdFailedToDisplayEvent;
-            MaxSdkCallbacks.Rewarded.OnAdDisplayedEvent += OnRewardedAdDisplayedEvent;
             MaxSdkCallbacks.Rewarded.OnAdClickedEvent += OnRewardedAdClickedEvent;
             MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedAdHiddenEvent;
             MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
@@ -59,7 +57,7 @@ namespace Treenod.Ad
         #endregion
 
         #region IAdSdk implement
-
+        
         public string GetRewardedAdUnitId ()
         {
             return _settingData == null ? string.Empty : _settingData.AdUnitIdentifire;
@@ -103,6 +101,17 @@ namespace Treenod.Ad
         #endregion
 
         #region callBack
+        
+        /*
+         * 콜백 호출 플로우
+         *
+         * ShowRewardedAd() 호출시 아래 순서로 콜백 호출됨
+         * 1. OnAdRevenuePaidEvent
+         *
+         * 광고 완료시 아래 순서로 콜백 호출됨
+         * 1. OnAdReceivedRewardEvent
+         * 2. OnAdHiddenEvent
+         */
 
         private void OnRewardedAdLoadedEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
         {
@@ -137,16 +146,6 @@ namespace Treenod.Ad
             }
         }
 
-        private void OnRewardedAdDisplayedEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
-        {
-            Debug.Log( "Rewarded ad displayed" );
-
-            if ( _onDisplayRewardedAd != null )
-            {
-                _onDisplayRewardedAd.Invoke();
-            }
-        }
-
         private void OnRewardedAdClickedEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
         {
             Debug.Log( "Rewarded ad clicked" );
@@ -176,6 +175,12 @@ namespace Treenod.Ad
         private void OnRewardedAdRevenuePaidEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
         {
             Debug.Log( "Rewarded ad revenue paid" );
+
+            //AppLovin은 광고 시작시 이벤트를 받을수 없어 OnRewardedAdRevenuePaidEvent시 같이 처리함
+            if (_onDisplayRewardedAd != null)
+            {
+                _onDisplayRewardedAd.Invoke();
+            }
 
             if ( _onRewardedAdImpression != null )
             {
