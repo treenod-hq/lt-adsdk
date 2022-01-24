@@ -1,7 +1,8 @@
 {
     "name": "AppLovinSettingDataCreator",
     "references": [
-        "Unity.com.treenod.adsdk-applovin"
+        "Unity.com.treenod.adsdk-applovin",
+        "MaxSdk.Scripts.IntegrationManager.Editor"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
