@@ -2,4 +2,7 @@
 AppLovin Adapter Implement
 
 1.0.1
-Max SDK is detached
+Max SDK was detached
+
+1.0.2
+Directory was changed 
