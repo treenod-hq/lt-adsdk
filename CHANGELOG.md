@@ -6,3 +6,6 @@ Max SDK was detached
 
 1.0.2
 Directory was changed 
+
+1.0.3
+Directory was changed 
