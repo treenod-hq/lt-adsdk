@@ -43,19 +43,7 @@ namespace Treenod.Ads.AppLovin
         /// </summary>
         /// <returns></returns>
         string GetRewardedAdUnitId ();
-
-        /// <summary>
-        /// 광고가 시작될때 이벤트를 받아야 할경우 등록
-        /// </summary>
-        /// <param name="onDisplayAd"></param>
-        void SubscribeOnDisplayRewardedAd ( Action onDisplayAd );
-
-        /// <summary>
-        /// 광고가 시작될때 이벤트를 받아야 할경우에 등록하였던 콜백 제거
-        /// </summary>
-        /// <param name="onDisplayAd"></param>
-        void CancelSubscriptionOnDisplayRewardedAd( Action onDisplayAd ); 
-
+        
         /// <summary>
         /// 광고가 시작될때 노출된 광고 정보를 받아야 할경우 설정한다. 
         /// </summary>
@@ -82,5 +70,18 @@ namespace Treenod.Ads.AppLovin
         /// </summary>
         /// <param name="onDisplayAd"></param>
         void CancelSubscriptionOnRewaredVideoReceived( Action onReceived ); 
+        
+        /// <summary>
+        /// 광고 종료시 콜백등록.
+        /// ShowRewardedAd() 의 onRewarded콜백과 같은 타이밍에 호촐되며 ShowRewardedAd() 외에 이벤트 콜백등록이 필요할경우 사용 
+        /// </summary>
+        /// <param name="onReceived"></param>
+        void SubscribeOnRewardedVideoClose ( Action onClose );
+        
+        /// <summary>
+        ///광고 종료시 콜백등록한것을 제거
+        /// </summary>
+        /// <param name="onDisplayAd"></param>
+        void CancelSubscriptionOnRewardedVideoClose( Action onClose ); 
     }
 }

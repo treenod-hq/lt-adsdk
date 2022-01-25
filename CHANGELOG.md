@@ -12,3 +12,6 @@ Directory was changed
 
 1.0.4
 fix subscribe methods
+
+1.0.5
+fix subscribe methods

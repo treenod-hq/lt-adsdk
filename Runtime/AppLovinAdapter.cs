@@ -13,9 +13,9 @@ namespace Treenod.Ads.AppLovin
         private Action _onReceiveRewardedAd;
         private Action<bool> _onCloseRewardedAd;
         
-        private List<Action> _displayRewardedAdListeners = new List<Action>();
         private List<Action<AdInfo>> _rewardedAdImpressionListeners = new List<Action<AdInfo>>();
         private List<Action> _receiveRewardedAdListeners = new List<Action>();
+        private List<Action> _closeRewardedAdListeners = new List<Action>();
 
         #region initialize
 
@@ -88,30 +88,7 @@ namespace Treenod.Ads.AppLovin
                 onClose.Invoke( false );
             }
         }
-
-        public void SubscribeOnDisplayRewardedAd ( Action onDisplayAd )
-        {
-            if ( _displayRewardedAdListeners.Contains( onDisplayAd ) )
-            {
-                return;
-            }
-
-            _displayRewardedAdListeners.Add( onDisplayAd );
-        }
-
-        public void CancelSubscriptionOnDisplayRewardedAd(Action onDisplayAd)
-        {
-            _displayRewardedAdListeners.Remove( onDisplayAd );
-        }
-
-        private void CallDisplayRewardedAdListeners()
-        {
-            foreach ( Action listener in _displayRewardedAdListeners )
-            {
-                listener.Invoke();
-            }
-        }
-
+        
         public void SubscribeOnRewardedAdImpression ( Action<AdInfo> onImpression )
         {
             if ( _rewardedAdImpressionListeners.Contains( onImpression ) )
@@ -153,6 +130,29 @@ namespace Treenod.Ads.AppLovin
         private void CallReceiveRewardedAdListeners()
         {
             foreach ( Action listener in _receiveRewardedAdListeners )
+            {
+                listener.Invoke();
+            }
+        }
+
+        public void SubscribeOnRewardedVideoClose(Action onClose)
+        {
+            if ( _closeRewardedAdListeners.Contains( onClose ) )
+            {
+                return;
+            }
+
+            _closeRewardedAdListeners.Add( onClose );
+        }
+
+        public void CancelSubscriptionOnRewardedVideoClose(Action onClose)
+        {
+            _closeRewardedAdListeners.Remove( onClose );
+        }
+        
+        private void CallCloseRewardedAdListeners()
+        {
+            foreach ( Action listener in _closeRewardedAdListeners )
             {
                 listener.Invoke();
             }
@@ -219,6 +219,8 @@ namespace Treenod.Ads.AppLovin
                 _onCloseRewardedAd.Invoke( true );
                 _onCloseRewardedAd = null;
             }
+
+            CallCloseRewardedAdListeners();
         }
 
         private void OnRewardedAdReceivedRewardEvent ( string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo )
@@ -237,9 +239,6 @@ namespace Treenod.Ads.AppLovin
         private void OnRewardedAdRevenuePaidEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
         {
             Debug.Log( "Rewarded ad revenue paid" );
-
-            //AppLovin은 광고 시작시 이벤트를 받을수 없어 OnRewardedAdRevenuePaidEvent시 같이 처리함
-            CallDisplayRewardedAdListeners();
 
             AdInfo info = ConvertAdInfo( adInfo );
             CallRewardedAdImpressionListeners( info );
