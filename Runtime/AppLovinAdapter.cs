@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 
-namespace Treenod.Ad
+namespace Treenod.Ads.AppLovin
 {
     public class AppLovinAdapter : IAdSdk
     {

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Treenod.Ad
+namespace Treenod.Ads.AppLovin
 {
     public class AppLovinSettingDataCreator
     {
@@ -10,7 +10,6 @@ namespace Treenod.Ad
         private static void CreateAppLovinSettings ()
         {
             CreateAppLovinSettingData();
-            CreateAppLovinSettingFile();
             
             AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("알림", "파일을 생성했습니다.", "확인");
@@ -34,16 +33,6 @@ namespace Treenod.Ad
 
             AppLovinSettingData asset = ScriptableObject.CreateInstance<AppLovinSettingData>();
             AssetDatabase.CreateAsset( asset, path );
-        }
-
-        private static void CreateAppLovinSettingFile()
-        {
-            if ( !Directory.Exists( "Assets/MaxSdk" ) )
-            {
-                Directory.CreateDirectory( "Assets/MaxSdk" );
-            }
-
-            AppLovinSettings settings = AppLovinSettings.Instance;
         }
     }
 }

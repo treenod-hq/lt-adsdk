@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Treenod.Ad
+namespace Treenod.Ads.AppLovin
 {
     public interface IAdSdk
     {

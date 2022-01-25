@@ -1,5 +1,5 @@
 {
-    "name": "Unity.com.treenod.adsdk-applovin",
+    "name": "Treenod.Ads.AppLovin",
     "references": [
         "MaxSdk.Scripts"
     ],
