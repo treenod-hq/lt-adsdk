@@ -9,3 +9,6 @@ Directory was changed
 
 1.0.3
 Directory was changed 
+
+1.0.4
+fix subscribe methods

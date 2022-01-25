@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-
-
 
 namespace Treenod.Ads.AppLovin
 {
@@ -13,8 +12,10 @@ namespace Treenod.Ads.AppLovin
         private Action<bool> _onLoadRewardedAd;
         private Action _onReceiveRewardedAd;
         private Action<bool> _onCloseRewardedAd;
-        private Action _onDisplayRewardedAd;
-        private Action<string> _onRewardedAdImpression;
+        
+        private List<Action> _displayRewardedAdListeners = new List<Action>();
+        private List<Action<AdInfo>> _rewardedAdImpressionListeners = new List<Action<AdInfo>>();
+        private List<Action> _receiveRewardedAdListeners = new List<Action>();
 
         #region initialize
 
@@ -90,12 +91,71 @@ namespace Treenod.Ads.AppLovin
 
         public void SubscribeOnDisplayRewardedAd ( Action onDisplayAd )
         {
-            _onDisplayRewardedAd = onDisplayAd;
+            if ( _displayRewardedAdListeners.Contains( onDisplayAd ) )
+            {
+                return;
+            }
+
+            _displayRewardedAdListeners.Add( onDisplayAd );
         }
 
-        public void SubscribeOnRewardedAdImpression ( Action<string> onImpression )
+        public void CancelSubscriptionOnDisplayRewardedAd(Action onDisplayAd)
         {
-            _onRewardedAdImpression = onImpression;
+            _displayRewardedAdListeners.Remove( onDisplayAd );
+        }
+
+        private void CallDisplayRewardedAdListeners()
+        {
+            foreach ( Action listener in _displayRewardedAdListeners )
+            {
+                listener.Invoke();
+            }
+        }
+
+        public void SubscribeOnRewardedAdImpression ( Action<AdInfo> onImpression )
+        {
+            if ( _rewardedAdImpressionListeners.Contains( onImpression ) )
+            {
+                return;
+            }
+
+            _rewardedAdImpressionListeners.Add( onImpression );
+        }
+        
+        public void CancelSubscriptionOnRewardedAdImpression( Action<AdInfo> onImpression )
+        {
+            _rewardedAdImpressionListeners.Remove( onImpression );
+        }
+        
+        private void CallRewardedAdImpressionListeners(AdInfo info)
+        {
+            foreach ( Action<AdInfo> listener in _rewardedAdImpressionListeners )
+            {
+                listener.Invoke( info );
+            }
+        }
+        
+        public void SubscribeOnRewaredVideoReceived ( Action onReceived )
+        {
+            if ( _receiveRewardedAdListeners.Contains( onReceived ) )
+            {
+                return;
+            }
+
+            _receiveRewardedAdListeners.Add( onReceived );
+        }
+        
+        public void CancelSubscriptionOnRewaredVideoReceived( Action onReceived )
+        {
+            _receiveRewardedAdListeners.Remove( onReceived );
+        }
+        
+        private void CallReceiveRewardedAdListeners()
+        {
+            foreach ( Action listener in _receiveRewardedAdListeners )
+            {
+                listener.Invoke();
+            }
         }
 
         #endregion
@@ -170,6 +230,8 @@ namespace Treenod.Ads.AppLovin
                 _onReceiveRewardedAd.Invoke();
                 _onReceiveRewardedAd = null;
             }
+
+            CallReceiveRewardedAdListeners();
         }
 
         private void OnRewardedAdRevenuePaidEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
@@ -177,15 +239,18 @@ namespace Treenod.Ads.AppLovin
             Debug.Log( "Rewarded ad revenue paid" );
 
             //AppLovin은 광고 시작시 이벤트를 받을수 없어 OnRewardedAdRevenuePaidEvent시 같이 처리함
-            if (_onDisplayRewardedAd != null)
-            {
-                _onDisplayRewardedAd.Invoke();
-            }
+            CallDisplayRewardedAdListeners();
 
-            if ( _onRewardedAdImpression != null )
-            {
-                _onRewardedAdImpression.Invoke( adInfo.NetworkName );
-            }
+            AdInfo info = ConvertAdInfo( adInfo );
+            CallRewardedAdImpressionListeners( info );
+        }
+
+        private AdInfo ConvertAdInfo(MaxSdkBase.AdInfo adInfo)
+        {
+            AdInfo info = new AdInfo();
+            info.revenue = adInfo.Revenue;
+            info.networkName = adInfo.NetworkName;
+            return info;
         }
 
         #endregion
