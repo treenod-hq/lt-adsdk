@@ -4,13 +4,12 @@ namespace Treenod.Ads.AppLovin
 {
     public class AppLovinSettingData : ScriptableObject
     {
-        public static string DIRECTORY = "Assets/Resources/AdSdk/";
-        public static string RESOURCES_FOLDER = "AdSdk/";
+        public static string DIRECTORY = "Assets/AdSdk/Resources/";
         public static string FILENAME = "AppLovinSettingData";
 
         public static AppLovinSettingData LoadData ()
         {
-            return Resources.Load<AppLovinSettingData>( RESOURCES_FOLDER + FILENAME );
+            return Resources.Load<AppLovinSettingData>( FILENAME );
         }
 
         [SerializeField]
