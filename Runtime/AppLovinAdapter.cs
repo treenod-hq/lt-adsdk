@@ -17,9 +17,11 @@ namespace Treenod.Ads.AppLovin
         private List<Action> _receiveRewardedAdListeners = new List<Action>();
         private List<Action> _closeRewardedAdListeners = new List<Action>();
 
+        private bool _isAddEventListener;
+
         #region initialize
 
-        public void Initialize ( Action onComplete )
+        public void Initialize ( Action onComplete, bool isManualEventListener = false )
         {
             if ( _initialized ) return;
 
@@ -28,7 +30,7 @@ namespace Treenod.Ads.AppLovin
             _settingData = AppLovinSettingData.LoadData();
             
             MaxSdkCallbacks.OnSdkInitializedEvent += OnInitialize;
-            SetRewardedAdCallbacks();
+            if ( !isManualEventListener ) SetRewardedAdCallbacks();
             
             MaxSdk.SetSdkKey( _settingData.SdkKey );
             //MaxSdk.SetUserId( userId );
@@ -46,6 +48,21 @@ namespace Treenod.Ads.AppLovin
 
         private void SetRewardedAdCallbacks ()
         {
+            AddEventListener();
+        }
+
+        #endregion
+        
+        #region Event Listener
+        
+        public void AddEventListener ()
+        {
+            if ( _isAddEventListener )
+            {
+                return;
+            }
+            _isAddEventListener = true;
+
             MaxSdkCallbacks.Rewarded.OnAdLoadedEvent += OnRewardedAdLoadedEvent;
             MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent += OnRewardedAdFailedEvent;
             MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent += OnRewardedAdFailedToDisplayEvent;
@@ -53,6 +70,23 @@ namespace Treenod.Ads.AppLovin
             MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedAdHiddenEvent;
             MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
+        }
+
+        public void RemoveEventListener ()
+        {
+            if ( !_isAddEventListener )
+            {
+                return;
+            }
+            _isAddEventListener = false;
+            
+            MaxSdkCallbacks.Rewarded.OnAdLoadedEvent -= OnRewardedAdLoadedEvent;
+            MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent -= OnRewardedAdFailedEvent;
+            MaxSdkCallbacks.Rewarded.OnAdDisplayFailedEvent -= OnRewardedAdFailedToDisplayEvent;
+            MaxSdkCallbacks.Rewarded.OnAdClickedEvent -= OnRewardedAdClickedEvent;
+            MaxSdkCallbacks.Rewarded.OnAdHiddenEvent -= OnRewardedAdHiddenEvent;
+            MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent -= OnRewardedAdReceivedRewardEvent;
+            MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent -= OnRewardedAdRevenuePaidEvent;
         }
 
         #endregion
