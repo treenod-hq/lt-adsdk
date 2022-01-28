@@ -2,6 +2,9 @@
 
 형식은 [Keep Changelog]를 기반으로 하며 이 프로젝트는 [Semantic Versioning]을 따릅니다.
 
+## [1.0.7] - 2022-01-28
+- 이벤트 콜백의 등록을 등록 및 해제를 할 수 있는 기능 추가
+
 ## [1.0.6] - 2022-01-26
 - fix datafile path
 
