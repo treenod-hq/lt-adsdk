@@ -11,7 +11,7 @@ namespace Treenod.Ads.AppLovin
         private Action _onInitialize;
         private Action<bool> _onLoadRewardedAd;
         private Action _onReceiveRewardedAd;
-        private Action<bool> _onCloseRewardedAd;
+        private Action<bool, string> _onCloseRewardedAd;
         
         private List<Action<AdInfo>> _rewardedAdImpressionListeners = new List<Action<AdInfo>>();
         private List<Action> _receiveRewardedAdListeners = new List<Action>();
@@ -109,7 +109,7 @@ namespace Treenod.Ads.AppLovin
             return MaxSdk.IsRewardedAdReady( GetRewardedAdUnitId() );
         }
 
-        public void ShowRewardedAd ( Action onRewarded, Action<bool> onClose )
+        public void ShowRewardedAd ( Action onRewarded, Action<bool, string> onClose )
         {
             if ( MaxSdk.IsRewardedAdReady( GetRewardedAdUnitId() ) )
             {
@@ -119,7 +119,7 @@ namespace Treenod.Ads.AppLovin
             }
             else
             {
-                onClose.Invoke( false );
+                onClose.Invoke( false, "Rewarded ad was not requested, can not check if it is loaded" );
             }
         }
         
@@ -235,7 +235,7 @@ namespace Treenod.Ads.AppLovin
 
             if ( _onCloseRewardedAd != null )
             {
-                _onCloseRewardedAd.Invoke( false );
+                _onCloseRewardedAd.Invoke( false, errorInfo.Message );
                 _onCloseRewardedAd = null;
             }
         }
@@ -250,7 +250,7 @@ namespace Treenod.Ads.AppLovin
             Debug.Log( "Rewarded ad dismissed" );
             if ( _onCloseRewardedAd != null )
             {
-                _onCloseRewardedAd.Invoke( true );
+                _onCloseRewardedAd.Invoke( true, string.Empty );
                 _onCloseRewardedAd = null;
             }
 

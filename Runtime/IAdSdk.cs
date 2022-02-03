@@ -47,9 +47,9 @@ namespace Treenod.Ads.AppLovin
         /// 보상을 받을수 있을때 호출
         /// </param>
         /// <param name="onClose">
-        /// 보상여부와 상관없이 광고가 종료되면 호출이 되며 정상적으로 종료시 true. 비정상으로 종료시 false를 반환
+        /// 보상여부와 상관없이 광고가 종료되면 호출이 되며 정상적으로 종료시 true. 비정상으로 종료시 false를 반환, false인 경우 Error 추가 전달
         /// </param>
-        void ShowRewardedAd ( Action onRewarded, Action<bool> onClose );
+        void ShowRewardedAd ( Action onRewarded, Action<bool, string> onClose );
 
         /// <summary>
         /// AppLovinSettingData 셋팅 파일에서 설정한 adUnitId 반환
