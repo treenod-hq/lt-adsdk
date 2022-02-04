@@ -209,8 +209,9 @@ namespace Treenod.Ads.AppLovin
 
         private void OnRewardedAdLoadedEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
         {
+#if UNITY_EDITOR
             Debug.Log( "Rewarded ad loaded" );
-
+#endif
             if ( _onLoadRewardedAd != null )
             {
                 _onLoadRewardedAd.Invoke( true );
@@ -220,8 +221,9 @@ namespace Treenod.Ads.AppLovin
 
         private void OnRewardedAdFailedEvent ( string adUnitId, MaxSdkBase.ErrorInfo errorInfo )
         {
+#if UNITY_EDITOR
             Debug.Log( "Rewarded ad failed to load with error code: " + errorInfo.Code );
-
+#endif
             if ( _onLoadRewardedAd != null )
             {
                 _onLoadRewardedAd.Invoke( false );
@@ -231,8 +233,9 @@ namespace Treenod.Ads.AppLovin
 
         private void OnRewardedAdFailedToDisplayEvent ( string adUnitId, MaxSdkBase.ErrorInfo errorInfo, MaxSdkBase.AdInfo adInfo )
         {
+#if UNITY_EDITOR
             Debug.Log( "Rewarded ad failed to display with error code: " + errorInfo.Code );
-
+#endif
             if ( _onCloseRewardedAd != null )
             {
                 _onCloseRewardedAd.Invoke( false, errorInfo.Message );
@@ -242,12 +245,16 @@ namespace Treenod.Ads.AppLovin
 
         private void OnRewardedAdClickedEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
         {
+#if UNITY_EDITOR
             Debug.Log( "Rewarded ad clicked" );
+#endif
         }
 
         private void OnRewardedAdHiddenEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
         {
+#if UNITY_EDITOR
             Debug.Log( "Rewarded ad dismissed" );
+#endif
             if ( _onCloseRewardedAd != null )
             {
                 _onCloseRewardedAd.Invoke( true, string.Empty );
@@ -259,8 +266,9 @@ namespace Treenod.Ads.AppLovin
 
         private void OnRewardedAdReceivedRewardEvent ( string adUnitId, MaxSdk.Reward reward, MaxSdkBase.AdInfo adInfo )
         {
+#if UNITY_EDITOR
             Debug.Log( "Rewarded ad received reward" );
-
+#endif
             if ( _onReceiveRewardedAd != null )
             {
                 _onReceiveRewardedAd.Invoke();
@@ -272,8 +280,9 @@ namespace Treenod.Ads.AppLovin
 
         private void OnRewardedAdRevenuePaidEvent ( string adUnitId, MaxSdkBase.AdInfo adInfo )
         {
+#if UNITY_EDITOR
             Debug.Log( "Rewarded ad revenue paid" );
-
+#endif
             AdInfo info = ConvertAdInfo( adInfo );
             CallRewardedAdImpressionListeners( info );
         }
