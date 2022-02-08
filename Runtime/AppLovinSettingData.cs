@@ -18,6 +18,8 @@ namespace Treenod.Ads.AppLovin
         private string adUnitIdentifierForAOS = "";
         [SerializeField]
         private string sdkKey = "";
+        [SerializeField]
+        private bool useMediationDebugger = false;
 
         public string AdUnitIdentifire
         {
@@ -36,6 +38,14 @@ namespace Treenod.Ads.AppLovin
             get
             {
                 return sdkKey;
+            }
+        }
+
+        public bool UseMediationDebugger
+        {
+            get 
+            {
+                return useMediationDebugger;
             }
         }
     }

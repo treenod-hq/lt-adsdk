@@ -44,6 +44,11 @@ namespace Treenod.Ads.AppLovin
                 _onInitialize.Invoke();
                 _onInitialize = null;
             }
+
+            if (_settingData.UseMediationDebugger)
+            {
+                MaxSdk.ShowMediationDebugger();
+            }
         }
 
         private void SetRewardedAdCallbacks ()

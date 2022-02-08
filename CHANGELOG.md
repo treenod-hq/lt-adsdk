@@ -2,6 +2,9 @@
 
 형식은 [Keep Changelog]를 기반으로 하며 이 프로젝트는 [Semantic Versioning]을 따릅니다.
 
+## [1.0.10] - 2022-02-08
+- AppLovinSettingData의 useMediationDebugger값의 여부로 initialize시 ShowMediationDebugger를 호출하는 기능 추가
+
 ## [1.0.9] - 2022-02-04
 - Debug.Log의 경우 에디터 환경에서만 출력되도록 변경
 
