@@ -2,6 +2,9 @@
 
 형식은 [Keep Changelog]를 기반으로 하며 이 프로젝트는 [Semantic Versioning]을 따릅니다.
 
+## [1.0.11] - 2022-03-02
+- ShowRewardedAd시 placementId 넣도록 수정
+
 ## [1.0.10] - 2022-02-08
 - AppLovinSettingData의 useMediationDebugger값의 여부로 initialize시 ShowMediationDebugger를 호출하는 기능 추가
 

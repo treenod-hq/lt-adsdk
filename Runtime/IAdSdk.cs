@@ -49,7 +49,7 @@ namespace Treenod.Ads.AppLovin
         /// <param name="onClose">
         /// 보상여부와 상관없이 광고가 종료되면 호출이 되며 정상적으로 종료시 true. 비정상으로 종료시 false를 반환, false인 경우 Error 추가 전달
         /// </param>
-        void ShowRewardedAd ( Action onRewarded, Action<bool, string> onClose );
+        void ShowRewardedAd ( string placementId, Action onRewarded, Action<bool, string> onClose );
 
         /// <summary>
         /// AppLovinSettingData 셋팅 파일에서 설정한 adUnitId 반환
@@ -95,6 +95,20 @@ namespace Treenod.Ads.AppLovin
         ///광고 종료시 콜백등록한것을 제거
         /// </summary>
         /// <param name="onDisplayAd"></param>
-        void CancelSubscriptionOnRewardedVideoClose( Action onClose ); 
+        void CancelSubscriptionOnRewardedVideoClose( Action onClose );
+
+        /// <summary>
+        /// 광고가 나왔을때 오는 콜백 등록. 광고가 끝나고 나올수있다고 한다.
+        /// </summary>
+        /// <param name="onImpression">
+        /// 광고 정보를 포함하는 콜백
+        /// </param>
+        void SubscribeOnRewardedAdDisplayed(Action<AdInfo> onImpression);
+
+        /// <summary>
+        /// 광고가 나왔을때 오는 콜백 제거
+        /// </summary>
+        /// <param name="onDisplayAd"></param>
+        void CancelSubscriptionOnRewardedAdDisplayed(Action<AdInfo> onImpression);
     }
 }

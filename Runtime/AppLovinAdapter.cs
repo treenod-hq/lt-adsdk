@@ -16,6 +16,7 @@ namespace Treenod.Ads.AppLovin
         private List<Action<AdInfo>> _rewardedAdImpressionListeners = new List<Action<AdInfo>>();
         private List<Action> _receiveRewardedAdListeners = new List<Action>();
         private List<Action> _closeRewardedAdListeners = new List<Action>();
+        private List<Action<AdInfo>> _rewardedAdDisplayedListeners = new List<Action<AdInfo>>();
 
         private bool _isAddEventListener;
 
@@ -75,6 +76,7 @@ namespace Treenod.Ads.AppLovin
             MaxSdkCallbacks.Rewarded.OnAdHiddenEvent += OnRewardedAdHiddenEvent;
             MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent += OnRewardedAdReceivedRewardEvent;
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
+            MaxSdkCallbacks.Rewarded.OnAdDisplayedEvent += OnRewardedAdDisplayedEvent;
         }
 
         public void RemoveEventListener ()
@@ -92,6 +94,7 @@ namespace Treenod.Ads.AppLovin
             MaxSdkCallbacks.Rewarded.OnAdHiddenEvent -= OnRewardedAdHiddenEvent;
             MaxSdkCallbacks.Rewarded.OnAdReceivedRewardEvent -= OnRewardedAdReceivedRewardEvent;
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent -= OnRewardedAdRevenuePaidEvent;
+            MaxSdkCallbacks.Rewarded.OnAdDisplayedEvent -= OnRewardedAdDisplayedEvent;
         }
 
         #endregion
@@ -114,13 +117,13 @@ namespace Treenod.Ads.AppLovin
             return MaxSdk.IsRewardedAdReady( GetRewardedAdUnitId() );
         }
 
-        public void ShowRewardedAd ( Action onRewarded, Action<bool, string> onClose )
+        public void ShowRewardedAd ( string placementId, Action onRewarded, Action<bool, string> onClose )
         {
             if ( MaxSdk.IsRewardedAdReady( GetRewardedAdUnitId() ) )
             {
                 _onReceiveRewardedAd = onRewarded;
                 _onCloseRewardedAd = onClose;
-                MaxSdk.ShowRewardedAd( GetRewardedAdUnitId() );
+                MaxSdk.ShowRewardedAd( GetRewardedAdUnitId(), placementId );
             }
             else
             {
@@ -197,10 +200,32 @@ namespace Treenod.Ads.AppLovin
             }
         }
 
+        public void SubscribeOnRewardedAdDisplayed(Action<AdInfo> onDisplayed)
+        {
+            if (_rewardedAdDisplayedListeners.Contains(onDisplayed))
+            {
+                return;
+            }
+
+            _rewardedAdDisplayedListeners.Add(onDisplayed);
+        }
+
+        public void CancelSubscriptionOnRewardedAdDisplayed(Action<AdInfo> onDisplayed)
+        {
+            _rewardedAdDisplayedListeners.Remove(onDisplayed);
+        }
+
+        private void CallRewardedAdDisplayedListeners(AdInfo info)
+        {
+            foreach (Action<AdInfo> listener in _rewardedAdDisplayedListeners)
+            {
+                listener.Invoke(info);
+            }
+        }
         #endregion
 
         #region callBack
-        
+
         /*
          * 콜백 호출 플로우
          *
@@ -290,6 +315,15 @@ namespace Treenod.Ads.AppLovin
 #endif
             AdInfo info = ConvertAdInfo( adInfo );
             CallRewardedAdImpressionListeners( info );
+        }
+
+        private void OnRewardedAdDisplayedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
+        {
+#if UNITY_EDITOR
+            Debug.Log("Rewarded ad Displayed");
+#endif
+            AdInfo info = ConvertAdInfo(adInfo);
+            CallRewardedAdDisplayedListeners(info);
         }
 
         private AdInfo ConvertAdInfo(MaxSdkBase.AdInfo adInfo)
