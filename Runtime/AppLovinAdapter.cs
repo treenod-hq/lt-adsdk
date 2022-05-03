@@ -24,7 +24,15 @@ namespace Treenod.Ads.AppLovin
 
         public void Initialize (string userId, Action onComplete, bool isManualEventListener = false )
         {
-            if ( _initialized ) return;
+            if (_initialized)
+            {
+                MaxSdk.SetUserId(userId);
+                if (onComplete != null)
+                {
+                    onComplete.Invoke();
+                }
+                return;
+            }
 
             _initialized = true;
             _onInitialize = onComplete;
