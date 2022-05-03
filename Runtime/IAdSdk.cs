@@ -13,7 +13,7 @@ namespace Treenod.Ads.AppLovin
         /// <param name="isManualEventListener">
         /// 사용자가 이벤트 콜백을 직접 등록하고 싶을 경우 사용 (직접 등록하고 싶을 경우 true 설정 후 AddEventListener, RemoveEventListener로 등록 및 해제를 진행한다)
         /// </param>
-        void Initialize ( Action onComplete, bool isManualEventListener = false );
+        void Initialize ( string userId, Action onComplete, bool isManualEventListener = false );
 
         /// <summary>
         /// 광고 sdk 관련 이벤트 콜백 등록

@@ -22,7 +22,7 @@ namespace Treenod.Ads.AppLovin
 
         #region initialize
 
-        public void Initialize ( Action onComplete, bool isManualEventListener = false )
+        public void Initialize (string userId, Action onComplete, bool isManualEventListener = false )
         {
             if ( _initialized ) return;
 
@@ -34,7 +34,7 @@ namespace Treenod.Ads.AppLovin
             if ( !isManualEventListener ) SetRewardedAdCallbacks();
             
             MaxSdk.SetSdkKey( _settingData.SdkKey );
-            //MaxSdk.SetUserId( userId );
+            MaxSdk.SetUserId( userId );
             MaxSdk.InitializeSdk();
         }
 

@@ -2,6 +2,9 @@
 
 형식은 [Keep Changelog]를 기반으로 하며 이 프로젝트는 [Semantic Versioning]을 따릅니다.
 
+## [1.0.12] - 2022-05-03
+- Initialize시 userId를 셋팅할수 있도록 수정
+
 ## [1.0.11] - 2022-03-02
 - ShowRewardedAd시 placementId 넣도록 수정
 
